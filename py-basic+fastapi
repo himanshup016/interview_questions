@@ -1,733 +1,282 @@
-1. What are Python's built-in data structures and when would you use each?
-Data Structure	Ordered	Mutable	Use Case
-List []	Yes	Yes	Dynamic collection, frequent updates
-Tuple ()	Yes	No	Fixed data, dictionary keys
-Set {}	No	Yes	Unique values, fast membership checks
-Dictionary {k:v}	Yes (3.7+)	Yes	Key-value lookups
-String	Yes	No	Text processing
+# Python & FastAPI Interview Preparation Guide
+#Python
+### 1. What are Python's built-in data structures and when would you use each?
 
-Example:
+  Data Structure   Ordered   Mutable   Use Case
+  ---------------- --------- --------- -----------------------------------
+  List             Yes       Yes       Dynamic collections
+  Tuple            Yes       No        Fixed records, dictionary keys
+  Set              No        Yes       Unique values, membership testing
+  Dictionary       Yes       Yes       Key-value lookups
+  String           Yes       No        Text processing
 
-users = ["John", "Mike"]      # list
-coords = (10, 20)             # tuple
-skills = {"python", "sql"}    # set
-employee = {"id": 1}          # dict
-2. Mutable vs Immutable Types
-Mutable
+### 2. Mutable vs Immutable Types
 
-Can be modified after creation.
+-   Mutable: list, dict, set
+-   Immutable: int, float, str, tuple
 
-lst = [1, 2]
-lst.append(3)
+### 3. List Comprehension vs Generator Expression
 
-Examples:
+-   List comprehension creates all items immediately.
+-   Generator expression creates items lazily and uses less memory.
 
-list
-dict
-set
-bytearray
-Immutable
+### 4. Generator vs Iterator
 
-Cannot change after creation.
+-   Iterator implements `__iter__()` and `__next__()`.
+-   Generator is a special iterator created using `yield`.
 
-x = "hello"
-x += " world"  # creates new object
+### 5. Decorators
 
-Examples:
+Decorators wrap functions to add behavior before/after execution.
 
-int
-float
-str
-tuple
-frozenset
-3. List Comprehension vs Generator Expression
-List Comprehension
+### 6. \*args and \*\*kwargs
 
-Creates entire list in memory.
+-   `*args` → variable positional arguments.
+-   `**kwargs` → variable keyword arguments.
 
-squares = [x*x for x in range(1000)]
-Generator Expression
+### 7. deepcopy vs copy
 
-Generates values lazily.
+-   `copy()` → shallow copy.
+-   `deepcopy()` → recursively copies nested objects.
 
-squares = (x*x for x in range(1000))
+### 8. Python GIL
 
-Difference:
+Only one thread executes Python bytecode at a time. Limits CPU-bound
+threading.
 
-List Comprehension	Generator
-Uses more memory	Memory efficient
-Immediate evaluation	Lazy evaluation
-4. Generator vs Iterator
-Iterator
+### 9. Threading vs Multiprocessing vs Asyncio
 
-Object implementing:
+-   Threading → I/O-bound work.
+-   Multiprocessing → CPU-bound work.
+-   Asyncio → high-concurrency I/O.
 
-__iter__()
-__next__()
-Generator
+### 10. Async/Await and Event Loop
 
-Special iterator created using yield.
+The event loop schedules and executes async tasks.
 
-def counter():
-    yield 1
-    yield 2
+### 11. When Async Does NOT Help
 
-Every generator is an iterator, but not every iterator is a generator.
+CPU-intensive operations.
 
-5. Decorators
+### 12. Context Managers
 
-A decorator modifies behavior of a function.
+Resource management using `with`, `__enter__`, and `__exit__`.
 
-def logger(func):
-    def wrapper(*args, **kwargs):
-        print("Calling function")
-        return func(*args, **kwargs)
-    return wrapper
+### 13. **init** vs **new**
 
-@logger
-def greet():
-    print("Hello")
+-   `__new__` creates objects.
+-   `__init__` initializes them.
 
-greet()
-6. What is *args and **kwargs?
-*args
+### 14. Common Dunder Methods
 
-Variable positional arguments.
+`__init__`, `__str__`, `__repr__`, `__len__`, `__eq__`
 
-def add(*args):
-    return sum(args)
-**kwargs
+### 15. @staticmethod vs @classmethod vs Instance Method
 
-Variable keyword arguments.
+-   Instance → `self`
+-   Class → `cls`
+-   Static → neither
 
-def info(**kwargs):
-    print(kwargs)
-7. deepcopy vs copy
-Shallow Copy
-import copy
-a = [[1,2]]
-b = copy.copy(a)
+### 16. Multiple Inheritance and MRO
 
-Nested objects shared.
+MRO determines method lookup order using C3 linearization.
 
-Deep Copy
-b = copy.deepcopy(a)
+### 17. Dataclasses
 
-Creates entirely independent copy.
+Auto-generates boilerplate like `__init__`, `__repr__`, and `__eq__`.
 
-8. Python GIL
+### 18. Type Hints
 
-Global Interpreter Lock allows only one thread to execute Python bytecode at a time.
+Improve readability, validation, and tooling support.
 
-Impact
-CPU-bound
+### 19. Memory Management
 
-No real parallelism.
+Reference counting + cyclic garbage collection.
 
-threading
+### 20. Lambda Functions
 
-Often slower.
+Small anonymous functions for simple operations.
 
-I/O-bound
+### 21. map(), filter(), reduce()
 
-Useful because threads wait for I/O.
+Functional programming helpers for transformation and aggregation.
 
-Use multiprocessing for CPU-heavy work.
+### 22. enumerate(), zip(), itertools
 
-9. Threading vs Multiprocessing vs Asyncio
-Feature	Threading	Multiprocessing	Asyncio
-Parallel CPU	No (GIL)	Yes	No
-Memory	Shared	Separate	Shared
-Best For	I/O	CPU	Massive I/O
+Useful iteration utilities.
 
-Examples:
+### 23. is vs ==
 
-Threading → API calls
-Multiprocessing → image processing
-Asyncio → thousands of websocket connections
-10. Async/Await and Event Loop
-async def get_data():
-    await fetch()
-Event Loop
+-   `==` compares values.
+-   `is` compares identity.
 
-Scheduler that manages async tasks.
+### 24. Exception Hierarchy
 
-asyncio.run(main())
+Custom exceptions should inherit from `Exception`.
 
-Allows concurrency without multiple threads.
+### 25. finally vs else
 
-11. When Async Does NOT Help
+-   `else` runs if no exception occurs.
+-   `finally` always runs.
 
-CPU-bound tasks.
+### 26. **slots**
 
-Bad:
+Reduces memory usage and prevents dynamic attributes.
 
-async def calculate():
-    for i in range(100000000):
-        pass
+### 27. Property Decorators
 
-Use:
+`@property`, `@setter`, and `@deleter` provide controlled access.
 
-multiprocessing
+### 28. namedtuple and TypedDict
 
-instead.
+Lightweight structured data containers.
 
-12. Context Managers
+### 29. Abstract Base Classes
 
-Automatic resource cleanup.
+Define required interfaces using `abc`.
 
-with open("file.txt") as f:
-    data = f.read()
+### 30. Monkey Patching
 
-Custom:
+Runtime modification of classes/modules; can be risky.
 
-class FileManager:
-    def __enter__(self):
-        print("Open")
-        return self
+### 31. Profiling
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        print("Close")
-13. init vs new
-new
+Use `cProfile`, `line_profiler`, or `py-spy`.
 
-Creates object.
+### 32. Walrus Operator (:=)
 
-init
+Assignment within expressions.
 
-Initializes object.
+### 33. Structural Pattern Matching
 
-class A:
-    def __new__(cls):
-        return super().__new__(cls)
+`match/case` syntax introduced in Python 3.10.
 
-    def __init__(self):
-        print("init")
-14. Common Dunder Methods
-__init__
-__str__
-__repr__
-__len__
-__eq__
+### 34. functools.lru_cache
 
-Example:
+Caches function results for faster repeated execution.
 
-def __str__(self):
-    return self.name
-15. @staticmethod vs @classmethod vs Instance Method
-class User:
+### 35. **str** vs **repr**
 
-    def instance(self):
-        pass
+-   `__str__` → user-friendly.
+-   `__repr__` → developer/debug representation.
 
-    @classmethod
-    def cls_method(cls):
-        pass
+------------------------------------------------------------------------
 
-    @staticmethod
-    def helper():
-        pass
-Type	Receives
-Instance	self
-Class	cls
-Static	nothing
-16. Multiple Inheritance and MRO
-class A:
-    pass
+ FASTAPI
 
-class B:
-    pass
+### 1. Why FastAPI?
 
-class C(A, B):
-    pass
+-   High performance
+-   Async support
+-   Automatic OpenAPI docs
+-   Pydantic validation
 
-MRO determines lookup order.
+### 2. Type Hints
 
-print(C.mro())
+Used for validation, conversion, and documentation.
 
-Uses C3 Linearization.
+### 3. Pydantic
 
-17. Dataclasses
+Data validation and serialization library.
 
-Reduces boilerplate.
+### 4. BaseModel and Validators
 
-from dataclasses import dataclass
+Models define schemas; validators enforce rules.
 
-@dataclass
-class User:
-    name: str
-    age: int
+### 5. Query vs Path vs Body vs Header vs Cookie
 
-Auto generates:
+Different request parameter sources.
 
-init
-repr
-eq
-18. Typing Module and Type Hints
-from typing import List
+### 6. Dependency Injection
 
-def add(nums: List[int]) -> int:
-    return sum(nums)
+Implemented using `Depends()`.
 
-Benefits:
+### 7. Database Sessions
 
-Better IDE support
-Static analysis
-Self-documenting code
-19. Python Memory Management
-Reference Counting
-a = []
-b = a
+Typically injected as dependencies and closed automatically.
 
-Object deleted when count reaches zero.
+### 8. Startup / Shutdown Lifecycle
 
-Garbage Collector
+Managed via lifespan context manager.
 
-Handles cyclic references.
+### 9. Async vs Sync Endpoints
 
-gc.collect()
-20. Lambda Function
+Async is preferred for I/O-heavy operations.
 
-Anonymous function.
+### 10. HTTPException vs Custom Handlers
 
-square = lambda x: x*x
+Custom handlers centralize error responses.
 
-Good:
+### 11. Middleware
 
-sorted(data, key=lambda x: x.age)
+Intercepts requests and responses.
 
-Avoid for complex logic.
+### 12. CORS
 
-21. map(), filter(), reduce()
-map
-map(lambda x: x*2, nums)
-filter
-filter(lambda x: x > 0, nums)
-reduce
-from functools import reduce
+Allows cross-origin browser requests.
 
-reduce(lambda a,b: a+b, nums)
-22. enumerate(), zip(), itertools
-enumerate
-for idx, value in enumerate(lst):
-zip
-for a,b in zip(names, ages):
-itertools
-from itertools import combinations
+### 13. Background Tasks vs Celery
 
-Efficient iterator tools.
+-   BackgroundTasks → lightweight jobs.
+-   Celery → distributed long-running jobs.
 
-23. is vs ==
-==
+### 14. OpenAPI / Swagger Docs
 
-Compares values.
+Generated automatically at `/docs`.
 
-[1] == [1]
+### 15. JWT Authentication
 
-True
+Token-based stateless authentication.
 
-is
+### 16. Rate Limiting
 
-Compares memory identity.
+Commonly implemented with `slowapi`.
 
-a is b
+### 17. File Uploads
 
-Use:
+Handled using `UploadFile`.
 
-x is None
-24. Exception Hierarchy and Custom Exceptions
-Exception
- ├─ ValueError
- ├─ TypeError
- ├─ KeyError
+### 18. APIRouter
 
-Custom:
+Organizes routes into modules.
 
-class UserNotFound(Exception):
-    pass
-25. finally vs else
-try:
-    pass
-except:
-    pass
-else:
-    print("No exception")
-finally:
-    print("Always runs")
-26. slots
+### 19. Unit Testing
 
-Reduces memory usage.
+Use `TestClient`.
 
-class User:
-    __slots__ = ("name", "age")
+### 20. response_model
 
-Prevents dynamic attributes.
+Validates and documents API responses.
 
-27. Property Decorators
-class User:
+### 21. 422 Validation Errors
 
-    def __init__(self):
-        self._age = 0
+Returned when request data fails validation.
 
-    @property
-    def age(self):
-        return self._age
+### 22. Sync vs Async SQLAlchemy
 
-    @age.setter
-    def age(self, value):
-        self._age = value
-28. namedtuple and TypedDict
-namedtuple
-from collections import namedtuple
+Async provides better concurrency.
 
-User = namedtuple("User", ["name", "age"])
-TypedDict
-from typing import TypedDict
+### 23. WebSockets
 
-class User(TypedDict):
-    name: str
-29. Abstract Base Classes
-from abc import ABC, abstractmethod
+Enable real-time communication.
 
-class Animal(ABC):
+### 24. Environment Variables
 
-    @abstractmethod
-    def speak(self):
-        pass
+Use `pydantic-settings` and `.env` files.
 
-Cannot instantiate until methods implemented.
+### 25. Production Deployment
 
-30. Monkey Patching
+Typical stack: Nginx → Gunicorn → Uvicorn Workers → FastAPI
 
-Runtime modification.
+## Most Important Topics
 
-module.func = new_func
-
-Danger:
-
-Hard debugging
-Unexpected behavior
-31. Profiling Python Code
-import cProfile
-
-cProfile.run("main()")
-
-Tools:
-
-cProfile
-line_profiler
-py-spy
-32. Walrus Operator
-if (n := len(data)) > 10:
-    print(n)
-
-Assigns and evaluates in one expression.
-
-33. Structural Pattern Matching
-match status:
-    case 200:
-        print("OK")
-    case 404:
-        print("Not Found")
-
-Python 3.10+
-
-34. functools.lru_cache
-
-Caches function results.
-
-from functools import lru_cache
-
-@lru_cache
-def fib(n):
-    ...
-
-Great for expensive repeated calculations.
-
-35. str vs repr
-str
-
-Human-readable.
-
-repr
-
-Developer/debug representation.
-
-def __str__(self):
-    return self.name
-
-def __repr__(self):
-    return f"User('{self.name}')"
-SECTION 5 — FASTAPI
-1. Why FastAPI over Flask or Django?
-Advantages
-High performance (Starlette + ASGI)
-Async support
-Automatic Swagger docs
-Type-based validation
-Dependency injection
-
-Compared to Flask:
-
-Less boilerplate
-Built-in validation
-
-Compared to Django:
-
-Lightweight for APIs
-2. How FastAPI Uses Type Hints
-@app.get("/users/{id}")
-def get_user(id: int):
-    return {"id": id}
-
-FastAPI:
-
-Validates input
-Converts types
-Generates OpenAPI docs
-3. What is Pydantic?
-
-Validation library.
-
-class User(BaseModel):
-    name: str
-    age: int
-
-FastAPI uses it for:
-
-Request validation
-Response serialization
-4. BaseModel and Validators
-from pydantic import BaseModel, field_validator
-
-class User(BaseModel):
-    age: int
-
-    @field_validator("age")
-    def validate_age(cls, v):
-        if v < 18:
-            raise ValueError("Too young")
-        return v
-5. Query vs Path vs Body vs Header vs Cookie
-id: int = Path(...)
-search: str = Query(...)
-user: User = Body(...)
-token: str = Header(...)
-session: str = Cookie(...)
-6. Dependency Injection
-from fastapi import Depends
-
-def get_db():
-    pass
-
-@app.get("/")
-def home(db=Depends(get_db)):
-    pass
-7. Database Sessions as Dependencies
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-8. Startup / Shutdown Lifecycle
-from contextlib import asynccontextmanager
-
-@asynccontextmanager
-async def lifespan(app):
-    print("startup")
-    yield
-    print("shutdown")
-
-app = FastAPI(lifespan=lifespan)
-9. Async vs Sync Endpoints
-@app.get("/")
-async def async_api():
-@app.get("/")
-def sync_api():
-
-Use async for:
-
-DB calls
-HTTP requests
-10. HTTPException vs Custom Exception Handler
-HTTPException
-raise HTTPException(404, "User not found")
-Custom Handler
-
-Centralized error formatting.
-
-@app.exception_handler(UserError)
-11. Middleware
-@app.middleware("http")
-async def log_requests(request, call_next):
-    response = await call_next(request)
-    return response
-12. CORS Middleware
-
-Allows frontend from different origins.
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"]
-)
-
-Needed because browsers block cross-origin requests.
-
-13. Background Tasks vs Celery
-BackgroundTasks
-
-Small quick tasks.
-
-background_tasks.add_task(send_email)
-Celery
-
-Long-running:
-
-Emails
-Video processing
-ML jobs
-
-Distributed workers.
-
-14. OpenAPI/Swagger Docs
-
-Generated automatically.
-
-Endpoints:
-
-/docs
-/redoc
-/openapi.json
-15. JWT Authentication
-
-Flow:
-
-Login
-Create JWT
-Send token
-Verify token
-jwt.encode(payload, secret)
-16. Rate Limiting
-
-Popular package:
-
-slowapi
-
-Example:
-
-@limiter.limit("5/minute")
-
-Prevents abuse.
-
-17. File Uploads
-from fastapi import UploadFile
-
-@app.post("/upload")
-async def upload(file: UploadFile):
-    return file.filename
-18. APIRouter
-router = APIRouter()
-
-@router.get("/")
-
-Benefits:
-
-Modular code
-Separate routes
-
-Large project:
-
-routers/
-services/
-models/
-schemas/
-19. Unit Testing FastAPI
-from fastapi.testclient import TestClient
-
-client = TestClient(app)
-
-def test_home():
-    response = client.get("/")
-    assert response.status_code == 200
-20. response_model
-@app.get("/", response_model=UserResponse)
-
-Benefits:
-
-Validation
-Documentation
-Security (hide fields)
-21. Why 422 Unprocessable Entity?
-
-Request validation failed.
-
-Example:
-
-{
-  "age": "abc"
-}
-
-Expected:
-
-age: int
-
-FastAPI returns detailed validation error.
-
-22. Sync vs Async SQLAlchemy
-Sync
-Session
-
-Blocks thread.
-
-Async
-AsyncSession
-
-Uses:
-
-await session.execute()
-
-Better for high concurrency.
-
-23. WebSockets
-@app.websocket("/ws")
-async def websocket(ws):
-    await ws.accept()
-
-Use cases:
-
-Chat
-Notifications
-Live dashboards
-24. Environment Variables and Config
-from pydantic_settings import BaseSettings
-
-class Settings(BaseSettings):
-    db_url: str
-
-Loads from:
-
-.env
-25. Production Deployment
-
-Common setup:
-
-Nginx
-  ↓
-Gunicorn
-  ↓
-Uvicorn Workers
-  ↓
-FastAPI
-
-Key concerns:
-
-Worker count
-Logging
-Monitoring
-Rate limiting
-HTTPS
-Connection pooling
-Health checks
-Redis caching
-Graceful shutdown
+1.  Async/Await
+2.  GIL
+3.  Generators
+4.  Decorators
+5.  Type Hints
+6.  Pydantic
+7.  Depends()
+8.  JWT Auth
+9.  SQLAlchemy
+10. FastAPI Deployment
